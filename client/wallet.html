@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body>
+   <!--
+  This example requires updating your template:
+
+  ```
+  <html class="h-full bg-white">
+  <body class="h-full">
+  ```
+-->
+<div>
+    <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
+    <div class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
+      <!--
+        Off-canvas menu backdrop, show/hide based on off-canvas menu state.
+  
+        Entering: "transition-opacity ease-linear duration-300"
+          From: "opacity-0"
+          To: "opacity-100"
+        Leaving: "transition-opacity ease-linear duration-300"
+          From: "opacity-100"
+          To: "opacity-0"
+      -->
+      <div class="fixed inset-0 bg-gray-900/80"></div>
+  
+      <div class="fixed inset-0 flex">
+        <!--
+          Off-canvas menu, show/hide based on off-canvas menu state.
+  
+          Entering: "transition ease-in-out duration-300 transform"
+            From: "-translate-x-full"
+            To: "translate-x-0"
+          Leaving: "transition ease-in-out duration-300 transform"
+            From: "translate-x-0"
+            To: "-translate-x-full"
+        -->
+        <div class="relative mr-16 flex w-full max-w-xs flex-1">
+          <!--
+            Close button, show/hide based on off-canvas menu state.
+  
+            Entering: "ease-in-out duration-300"
+              From: "opacity-0"
+              To: "opacity-100"
+            Leaving: "ease-in-out duration-300"
+              From: "opacity-100"
+              To: "opacity-0"
+          -->
+          <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
+            <button type="button" class="-m-2.5 p-2.5">
+              <span class="sr-only">Close sidebar</span>
+              <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+  
+          <!-- Sidebar component, swap this element with another sidebar if you like -->
+          <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-2">
+            <div class="flex h-16 shrink-0 items-center">
+              <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=white" alt="Your Company">
+            </div>
+            <nav class="flex flex-1 flex-col">
+              <ul role="list" class="flex flex-1 flex-col gap-y-7">
+                <li>
+                  <ul role="list" class="-mx-2 space-y-1">
+                    <li>
+                      <!-- Current: "bg-indigo-700 text-white", Default: "text-indigo-200 hover:text-white hover:bg-indigo-700" -->
+                      <a href="#" class="bg-indigo-700 text-white group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                        <svg class="h-6 w-6 shrink-0 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                        Dashboard
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                        <svg class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                        </svg>
+                        Team
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                        <svg class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                        </svg>
+                        Projects
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                        <svg class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                        </svg>
+                        Calendar
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                        <svg class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+                        </svg>
+                        Documents
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                        <svg class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
+                        </svg>
+                        Reports
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <div class="text-xs font-semibold leading-6 text-indigo-200">Your teams</div>
+                  <ul role="list" class="-mx-2 mt-2 space-y-1">
+                    <li>
+                      <!-- Current: "bg-indigo-700 text-white", Default: "text-indigo-200 hover:text-white hover:bg-indigo-700" -->
+                      <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                        <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">H</span>
+                        <span class="truncate">Heroicons</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                        <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">T</span>
+                        <span class="truncate">Tailwind Labs</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                        <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">W</span>
+                        <span class="truncate">Workcation</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Static sidebar for desktop -->
+    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+      <!-- Sidebar component, swap this element with another sidebar if you like -->
+      <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-green-800 px-6">
+        <div class="flex h-16 shrink-0 items-center bg-gray-50 rounded-md mt-2">
+          <span class="font-semibold text-4xl text-gray-700 p-3">Wallet<span class="text-green-600 font-bold">Watch</span></span>
+          <!-- <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=white" alt="Your Company"> -->
+        </div>
+        <nav class="flex flex-1 flex-col">
+          <ul role="list" class="flex flex-1 flex-col gap-y-7">
+            <li>
+              <ul role="list" class="-mx-2 space-y-1">
+                <li>
+                  <!-- Current: "bg-indigo-700 text-white", Default: "text-indigo-200 hover:text-white hover:bg-indigo-700" -->
+                  <a href="../client/index.html" class="text-gray-50 hover:text-white hover:bg-green-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg class="h-6 w-6 shrink-0 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    </svg>
+                    Dashboard
+                  </a>
+                </li>
+                <li>
+                    <a href="../client/wallet.html" class="bg-green-600 text-white group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 text-gray-50 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />
+                      </svg>
+                      Wallet
+                    </a>
+                  </li>
+                  <li>
+                    <a href="../client/income.html" class="text-gray-50 hover:text-white hover:bg-green-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 text-gray-50 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 6.43l.776 2.898m0 0 3.182-5.511m-3.182 5.51-5.511-3.181" />
+                      </svg>
+                      Income
+                    </a>
+                  </li>
+                <li>
+                  <a href="../client/expenses.html" class="text-gray-50 hover:text-white hover:bg-green-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 text-gray-50 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                      </svg>    
+                    Expenses
+                  </a>
+                </li>
+                <!-- <li>
+                  <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                    </svg>
+                    Projects
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                    </svg>
+                    Calendar
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+                    </svg>
+                    Documents
+                  </a>
+                </li> -->
+                <li>
+                  <a href="../client/report.html" class="text-gray-50 hover:text-white hover:bg-green-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg class="h-6 w-6 shrink-0 text-gray-50 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
+                    </svg>
+                    Report
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- <li>
+              <div class="text-xs font-semibold leading-6 text-indigo-200">Your teams</div>
+              <ul role="list" class="-mx-2 mt-2 space-y-1">
+                <li>
+                  <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">H</span>
+                    <span class="truncate">Heroicons</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">T</span>
+                    <span class="truncate">Tailwind Labs</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="text-indigo-200 hover:text-white hover:bg-indigo-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">W</span>
+                    <span class="truncate">Workcation</span>
+                  </a>
+                </li>
+              </ul>
+            </li> -->
+            <!-- <li class="-mx-6 mt-auto">
+              <a href="#" class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-indigo-700">
+                <img class="h-8 w-8 rounded-full bg-indigo-700" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                <span class="sr-only">Your profile</span>
+                <span aria-hidden="true">Tom Cook</span>
+              </a>
+            </li> -->
+          </ul>
+        </nav>
+      </div>
+    </div>
+  
+    <div class="sticky top-0 z-40 flex items-center gap-x-6 bg-indigo-600 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+      <button type="button" class="-m-2.5 p-2.5 text-indigo-200 lg:hidden">
+        <span class="sr-only">Open sidebar</span>
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+      <div class="flex-1 text-sm font-semibold leading-6 text-white">Dashboard</div>
+      <a href="#">
+        <span class="sr-only">Your profile</span>
+        <img class="h-8 w-8 rounded-full bg-indigo-700" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+      </a>
+    </div>
+  
+    <main class="py-10 lg:pl-72">
+      <div class="px-4 sm:px-6 lg:px-8 ">
+        <div class="px-4 sm:px-6 lg:px-8">
+            <!-- <span class="text-4xl font-medium">Wallet</span> -->
+            <div class="bg-green-700 mt-4 rounded-lg">
+                <div class="mx-auto max-w-7xl">
+                  <div class="grid grid-cols-12 gap-px  sm:grid-cols-2 lg:grid-cols-12">
+                    <div class="bg-green-700 text-center px-4 py-6 sm:px-6 lg:px-8 col-span-12">
+                      <p class="text-xl font-medium leading-6 text-gray-50">Total Balance</p>
+                      <p class="mt-2 flex justify-center gap-x-2">
+                        <span class="text-5xl font-bold tracking-tight text-white">₱ 4,000.00</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-12 gap-px  sm:grid-cols-2 lg:grid-cols-12">
+                    <div class="bg-green-700 text-center px-4 py-6 sm:px-6 lg:px-8 col-span-6">
+                      <p class="text-xl font-medium leading-6 text-gray-50">Total Income</p>
+                      <p class="mt-2 flex justify-center gap-x-2">
+                        <span class="text-4xl font-bold tracking-tight text-white"> + ₱ 6,000.00</span>
+                      </p>
+                    </div>
+                    <div class="bg-green-700 text-center px-4 py-6 sm:px-6 lg:px-8 col-span-6">
+                        <p class="text-xl font-medium leading-6 text-gray-50">Total Expense</p>
+                        <p class="mt-2 flex justify-center gap-x-2">
+                          <span class="text-4xl font-bold tracking-tight text-white"> - ₱ 2,000.00</span>
+                        </p>
+                      </div>
+                  </div>
+                </div>
+              </div> 
+              <div class="mt-4">
+                  <span class="text-2xl font-medium">Transactions</span>
+                  <div class="px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-end">
+                      <div x-data="{ isOpen: false }" class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                        <button type="button" @click="isOpen = true"
+                        class="block rounded-md bg-green-600 px-3 py-2 text-center text-sm font-semibold 
+                        text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 
+                        focus-visible:outline-offset-2 focus-visible:outline-green-600">Add Transaction</button>
+
+                        <!-- modal -->
+                        <div x-cloak  class="fixed transform transition duration-200 ease-in-out z-50 inset-0 overflow-y-auto" :class="{ 'opacity-100': isOpen, 'opacity-0 pointer-events-none': !isOpen }">
+                            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 sm:p-0">
+                            <div x-show="isOpen" class="fixed transform transition duration-150 ease-in-out bg-white rounded-lg shadow-lg w-full max-w-md m-auto">
+                                <div class="flex items-center justify-between p-4 border-b border-gray-200 rounded-t">
+                                <h5 class="text-xl font-medium text-gray-800">New Transaction</h5>
+                                <button @click="isOpen = false" type="button" class="text-gray-400 focus:outline-none hover:text-gray-500">
+                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                      </svg>
+                                      
+                                </button>
+                                </div>
+                                <div class="p-6">
+                                <!-- form -->
+                                    <div class="pb-12">
+                                    
+                                        <div class="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                        <div class="sm:col-span-6">
+                                            <label for="transaction_number" class="block text-sm font-medium leading-6 text-gray-900">Transaction No.</label>
+                                            <div class="mt-2">
+                                            <input type="text" name="transaction_number" id="transaction_number" disabled class="px-3 block w-full rounded-md border-0 py-1.5 text-gray-600 font-medium shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            </div>
+                                        </div>
+                                        <div class="sm:col-span-6">
+                                            <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Transaction Type</label>
+                                            <div class="mt-2">
+                                            <select id="country" name="country" autocomplete="country-name" class="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-green-600 sm:max-w-md sm:text-sm sm:leading-6">
+                                                <option>-- SELECT --</option>
+                                                <option>Income</option>
+                                                <option>Expense</option>
+                                            </select>
+                                            </div>
+                                        </div>
+                                        <div class="sm:col-span-6">
+                                            <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Category</label>
+                                            <div class="mt-2">
+                                            <select id="country" name="country" autocomplete="country-name" class="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-green-600 sm:max-w-md sm:text-sm sm:leading-6">
+                                                <option>-- SELECT --</option>
+                                                <option>Income</option>
+                                                <option>Expense</option>
+                                            </select>
+                                            </div>
+                                        </div>
+                                        <div class="sm:col-span-6">
+                                            <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
+                                            <div class="mt-2">
+                                            <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-green-600 sm:text-sm sm:leading-6">
+                                            </div>
+                                        </div>
+                                        <div class="sm:col-span-6">
+                                            <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">Amount</label>
+                                            <div class="mt-2">
+                                            <input type="number" name="first-name" id="first-name" autocomplete="given-name" class="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-green-600 sm:text-sm sm:leading-6">
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <!-- form end -->
+                                </div>
+                                <div class="flex space-x-3 items-center justify-end p-4 border-t border-gray-200 rounded-b">
+                                    <button @click="isOpen = false" type="button" class="px-4 py-2 rounded-md bg-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Close</button>
+                                <button @click="isOpen = false" type="button" class="px-4 py-2 rounded-md bg-green-600 text-sm font-medium text-gray-50 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Submit</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- modal end -->
+
+                      </div>
+                    </div>
+                    <div class="flow-root">
+                      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                          <table class="min-w-full divide-y divide-gray-300">
+                            <thead>
+                              <tr>
+                                <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Transaction No.</th>
+                                <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Transaction Type</th>
+                                <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Description</th>
+                                <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Amount</th>
+                                <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">Date</th>
+                              </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 bg-white">
+                              <tr>
+                                <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">TRN-000101211</td>
+                                <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
+                                    <span class="inline-flex items-center rounded-md bg-green-50 
+                                    px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                    INCOME
+                                    </span>
+                                </td>
+                                <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900">Salary</td>
+                                <td class="whitespace-nowrap px-2 py-2 text-sm text-green-500">+ ₱6,000.00</td>
+                                <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500">May 21, 2024 08:00 AM</td>
+                              </tr>
+                              <tr>
+                                <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">TRN-000101212</td>
+                                <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
+                                    <span class="inline-flex items-center rounded-md bg-red-50 px-1.5 py-0.5 text-xs 
+                                    font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
+                                    EXPENSE
+                                    </span>
+                                </td>
+                                <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900">Grocery</td>
+                                <td class="whitespace-nowrap px-2 py-2 text-sm text-red-500">- ₱2,000.00</td>
+                                <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500">May 21, 2024 08:15 AM</td>
+                              </tr>
+                  
+                              <!-- More transactions... -->
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="js/wallet.js"></script>
+</body>
+</html>
