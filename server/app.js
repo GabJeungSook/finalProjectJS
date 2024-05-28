@@ -31,4 +31,27 @@ app.get('/getCategories', (request, response) => {
     .catch(err => console.log(err));
 });
 
+//get transactions
+app.get('/getTransactions', (request, response) => {
+    const db = DBServices.getDBServiceInstance();
+
+    const result = db.getAllTransactions();
+    result
+    .then(data => response.json({data: data}))
+    .catch(err => console.log(err));
+});
+
+//save transaction
+//insert order
+app.post('/insertTransaction', (request, response) => {
+
+    const db = DBServices.getDBServiceInstance();
+    const result = db.insertTransaction(request.body);
+
+    result
+    .then(data => response.json({data: data}))
+    .catch(err => console.log(err));
+})
+
+
 app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));

@@ -54,6 +54,39 @@ class DBServices {
             console.log(error);
         }
     }
+
+    async getAllTransactions() {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT t.transaction_number, t.type_id, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id;";
+                db.query(query, (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                });
+            });
+            return response;
+        } catch (error)
+        {
+            console.log(error);
+        }
+    }
+
+    async insertTransaction({user, transaction_number, type, category, description, amount, date}) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = "INSERT INTO transactions (user_id, type_id, category_id, transaction_number, description, amount, date) VALUES (?, ?, ?, ?, ?, ?, ?);";
+                db.query(query, [user, type, category, transaction_number, description, amount, date], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                });
+            });
+
+            return {response};
+        } catch (error)
+        {
+            console.log(error);
+        }
+    }
 }
 
 module.exports = DBServices;
