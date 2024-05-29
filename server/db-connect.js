@@ -142,6 +142,74 @@ class DBServices {
         }
     }
 
+    async getAllIncomeTransactions({filter}) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                let query = "";
+                switch(filter)
+                {
+                    case 'day':
+                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 1 AND DATE(t.date) = CURDATE();";
+                        break;
+                    case 'week':
+                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 1 AND YEARWEEK(t.date) = YEARWEEK(CURDATE());";
+                        break;
+                    case 'month':
+                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 1 AND MONTH(t.date) = MONTH(CURDATE()) AND YEAR(t.date) = YEAR(CURDATE());";
+                        break;
+                    case 'year':
+                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 1 AND YEAR(t.date) = YEAR(CURDATE());";
+                        break;
+                    default:
+                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 1;"; 
+                        break;
+                }
+                db.query(query, (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                });
+            });
+            return response;
+        } catch (error)
+        {
+            console.log(error);
+        }
+    }
+
+    async getAllExpenseTransactions({filter}) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                let query = "";
+                switch(filter)
+                {
+                    case 'day':
+                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2 AND DATE(t.date) = CURDATE();";
+                        break;
+                    case 'week':
+                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2 AND YEARWEEK(t.date) = YEARWEEK(CURDATE());";
+                        break;
+                    case 'month':
+                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2 AND MONTH(t.date) = MONTH(CURDATE()) AND YEAR(t.date) = YEAR(CURDATE());";
+                        break;
+                    case 'year':
+                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2 AND YEAR(t.date) = YEAR(CURDATE());";
+                        break;
+                    default:
+                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2;"; 
+                        break;
+                }
+                db.query(query, (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                });
+            });
+            return response;
+        } catch (error)
+        {
+            console.log(error);
+        }
+    }
+
 }
 
 module.exports = DBServices;

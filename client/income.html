@@ -290,12 +290,25 @@
             <div class="px-4 sm:px-6 lg:px-8 mt-4">
                 <div class="mt-8 flow-root">
                   <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex justify-end pr-8">
+                      <div class="">
+                        <div class="mt-1">
+                        <select id="date_filter" name="date_filter" class="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-green-600 sm:max-w-md sm:text-sm sm:leading-6">
+                            <option value="day">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="year">This Year</option>
+                        </select>
+                        </div>
+                    </div>
+                    </div>
                     <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                      <table class="min-w-full">
+                      <table id="income_table" class="min-w-full">
                         <thead class="bg-white">
                             <tr>
                                 <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-0"></th>
                                 <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Transaction No.</th>
+                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Category</th>
                                 <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Description</th>
                                 <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Amount</th>
                                 <th scope="col" class="relative py-3 pl-3 pr-4 sm:pr-0">
@@ -305,49 +318,9 @@
                         </thead>
                         <tbody class="bg-white">
                           <tr class="border-t border-gray-200">
-                            <th colspan="5" scope="colgroup" class="bg-gray-50 py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">January 01, 2024</th>
+                            <td colspan="6" class="whitespace-nowrap py-5 pl-4 pr-3 text-xl text-gray-500 text-center font-medium italic">... Loading Content</td>
                           </tr>
-                          <tr class="border-t border-gray-300">
-                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3"></td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Front-end Developer</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">lindsay.walton@example.com</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>
-                            <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
-                              <a href="#" class="text-green-600 hover:text-green-900">Edit<span class="sr-only">, Lindsay Walton</span></a>
-                              <a href="#" class="text-red-600 hover:text-red-900">Delete<span class="sr-only">, Lindsay Walton</span></a>
-                            </td>
-                          </tr>
-                          <tr class="border-t border-gray-200">
-                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3"></td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Designer</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">courtney.henry@example.com</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Admin</td>
-                            <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
-                              <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Courtney Henry</span></a>
-                            </td>
-                          </tr>
-                          <tr class="border-t border-gray-200">
-                            <th colspan="5" scope="colgroup" class="bg-gray-50 py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">Edinburgh</th>
-                          </tr>
-                          <tr class="border-t border-gray-300">
-                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">Lindsay Walton</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Front-end Developer</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">lindsay.walton@example.com</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>
-                            <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
-                              <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Lindsay Walton</span></a>
-                            </td>
-                          </tr>
-                          <tr class="border-t border-gray-200">
-                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">Courtney Henry</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Designer</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">courtney.henry@example.com</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Admin</td>
-                            <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
-                              <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Courtney Henry</span></a>
-                            </td>
-                          </tr>
-                          <!-- More people... -->
+                         
                         </tbody>
                       </table>
                     </div>
@@ -361,6 +334,6 @@
       </div>
     </main>
   </div>
-  
+  <script src="js/income.js"></script>
 </body>
 </html>

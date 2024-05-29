@@ -62,5 +62,26 @@ app.get('/getTotals', (request, response) => {
     .catch(err => console.log(err));
 });
 
+//incomes
+app.get('/getIncomes', (request, response) => {
+    const db = DBServices.getDBServiceInstance();
+
+    const result = db.getAllIncomeTransactions(request.query);
+    result
+    .then(data => response.json({data: data}))
+    .catch(err => console.log(err));
+});
+
+//expenses
+app.get('/getExpenses', (request, response) => {
+    const db = DBServices.getDBServiceInstance();
+
+    const result = db.getAllExpenseTransactions(request.query);
+    result
+    .then(data => response.json({data: data}))
+    .catch(err => console.log(err));
+});
+
+
 
 app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(response => response.json())
     .then(data => loadTransactionTypes(data['data']));
     const filter = document.getElementById("date_filter");
+    
     filter.value = 'day';
     fetch('http://localhost:8080/getTransactions?filter='+ filter.value)
     .then(response => response.json())
