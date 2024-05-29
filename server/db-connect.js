@@ -87,6 +87,23 @@ class DBServices {
             console.log(error);
         }
     }
+
+    async getAllTotal() {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) AS INCOME, SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END) AS EXPENSE, (SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) - SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END)) AS TOTAL FROM transactions;";
+                db.query(query, (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                });
+            });
+            return response;
+        } catch (error)
+        {
+            console.log(error);
+        }
+    }
+
 }
 
 module.exports = DBServices;

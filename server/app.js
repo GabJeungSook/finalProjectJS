@@ -42,7 +42,6 @@ app.get('/getTransactions', (request, response) => {
 });
 
 //save transaction
-//insert order
 app.post('/insertTransaction', (request, response) => {
 
     const db = DBServices.getDBServiceInstance();
@@ -52,6 +51,16 @@ app.post('/insertTransaction', (request, response) => {
     .then(data => response.json({data: data}))
     .catch(err => console.log(err));
 })
+
+//get total
+app.get('/getTotals', (request, response) => {
+    const db = DBServices.getDBServiceInstance();
+
+    const result = db.getAllTotal();
+    result
+    .then(data => response.json({data: data}))
+    .catch(err => console.log(err));
+});
 
 
 app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));

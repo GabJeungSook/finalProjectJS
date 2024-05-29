@@ -5,20 +5,29 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('http://localhost:8080/getTransactions')
     .then(response => response.json())
     .then(data => loadTransactionTable(data['data']));
+    fetch('http://localhost:8080/getTotals')
+    .then(response => response.json())
+    .then(data => loadTotalAmounts(data['data']));
 
     const transaction_number = document.getElementById("transaction_number");
     transaction_number.value = 'TRN-000' + Math.floor(Math.random() * 1000000);
-    
+
     const type = document.getElementById("transaction_type");
+    const filter = document.getElementById("date_filter");
     const submitButton = document.getElementById("submitTransaction");
     
-    
+    filter.value = 'day';
 
     type.addEventListener('change', function() {
         const type_id = type.value;
         fetch('http://localhost:8080/getCategories?id=' + type_id)
         .then(response => response.json())
         .then(data => loadCategories(data['data']));
+    });
+
+    filter.addEventListener('change', function() {
+        const filter_value = filter.value;
+        console.log(filter_value);
     });
 
     submitButton.addEventListener('click', function() {
@@ -44,6 +53,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 fetch('http://localhost:8080/getTransactions')
                 .then(response => response.json())
                 .then(data => loadTransactionTable(data['data']));
+                fetch('http://localhost:8080/getTotals')
+                .then(response => response.json())
+                .then(data => loadTotalAmounts(data['data']));
+
+                transaction_number.value = 'TRN-000' + Math.floor(Math.random() * 1000000);
+                document.getElementById("transaction_type").value = 0;
+                document.getElementById("categories").value = 0;
+                document.getElementById("description").value = '';
+                document.getElementById("amount").value = '';
             })
         }
 
@@ -187,4 +205,35 @@ function loadTransactionTable(data)
             tbody.appendChild(row);
     }
     table.appendChild(tbody);
+}
+
+function loadTotalAmounts(data)
+{
+    const wallet_money = document.getElementById("total_money");
+    const total_income = document.getElementById("total_income");
+    const total_expense = document.getElementById("total_expense");
+
+    wallet_money.innerHTML = '';
+    total_income.innerHTML = '';
+    total_expense.innerHTML = '';
+
+    if(data[0].TOTAL === null || data[0].INCOME === null || data[0].EXPENSE === null)
+    {
+        document.getElementById('total_money').innerHTML = '₱ 0.00';
+        document.getElementById('total_income').innerHTML = '₱ 0.00';
+        document.getElementById('total_expense').innerHTML = '₱ 0.00';
+        return;
+    }
+
+    const total = data[0].TOTAL;
+    const income = data[0].INCOME;
+    const expense = data[0].EXPENSE;
+
+    const formattedTotal = total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const formattedIncome = income.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const formattedExpense = expense.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    wallet_money.innerHTML = `₱ ${formattedTotal}`;
+    total_income.innerHTML = `+ ₱ ${formattedIncome}`;
+    total_expense.innerHTML = `- ₱ ${formattedExpense}`;
 }

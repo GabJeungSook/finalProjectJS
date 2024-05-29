@@ -296,7 +296,7 @@
                     <div class="bg-green-700 text-center px-4 py-6 sm:px-6 lg:px-8 col-span-12">
                       <p class="text-xl font-medium leading-6 text-gray-50">Total Balance</p>
                       <p class="mt-2 flex justify-center gap-x-2">
-                        <span class="text-5xl font-bold tracking-tight text-white">₱ 4,000.00</span>
+                        <span id="total_money" class="text-5xl font-bold tracking-tight text-white">---</span>
                       </p>
                     </div>
                   </div>
@@ -304,13 +304,13 @@
                     <div class="bg-green-700 text-center px-4 py-6 sm:px-6 lg:px-8 col-span-6">
                       <p class="text-xl font-medium leading-6 text-gray-50">Total Income</p>
                       <p class="mt-2 flex justify-center gap-x-2">
-                        <span class="text-4xl font-bold tracking-tight text-white"> + ₱ 6,000.00</span>
+                        <span id="total_income" class="text-4xl font-bold tracking-tight text-white">---</span>
                       </p>
                     </div>
                     <div class="bg-green-700 text-center px-4 py-6 sm:px-6 lg:px-8 col-span-6">
                         <p class="text-xl font-medium leading-6 text-gray-50">Total Expense</p>
                         <p class="mt-2 flex justify-center gap-x-2">
-                          <span class="text-4xl font-bold tracking-tight text-white"> - ₱ 2,000.00</span>
+                          <span id="total_expense" class="text-4xl font-bold tracking-tight text-white">---</span>
                         </p>
                       </div>
                   </div>
@@ -320,7 +320,18 @@
                   <span class="text-2xl font-medium">Transactions</span>
                   <div class="px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-end">
-                      <div x-data="{ isOpen: false }" class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                    
+                      <div x-data="{ isOpen: false }" class="mt-4 sm:ml-16 sm:mt-0 sm:flex space-x-3">
+                        <div class="">
+                          <div class="mt-1">
+                          <select id="date_filter" name="date_filter" class="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-green-600 sm:max-w-md sm:text-sm sm:leading-6">
+                              <option value="day">Today</option>
+                              <option value="week">This Week</option>
+                              <option value="month">This Month</option>
+                              <option value="year">This Year</option>
+                          </select>
+                          </div>
+                      </div>
                         <button type="button" @click="isOpen = true"
                         class="block rounded-md bg-green-600 px-3 py-2 text-center text-sm font-semibold 
                         text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 
