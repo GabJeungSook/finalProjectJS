@@ -35,7 +35,7 @@ app.get('/getCategories', (request, response) => {
 app.get('/getTransactions', (request, response) => {
     const db = DBServices.getDBServiceInstance();
 
-    const result = db.getAllTransactions();
+    const result = db.getAllTransactions(request.query);
     result
     .then(data => response.json({data: data}))
     .catch(err => console.log(err));
@@ -56,7 +56,7 @@ app.post('/insertTransaction', (request, response) => {
 app.get('/getTotals', (request, response) => {
     const db = DBServices.getDBServiceInstance();
 
-    const result = db.getAllTotal();
+    const result = db.getAllTotal(request.query);
     result
     .then(data => response.json({data: data}))
     .catch(err => console.log(err));

@@ -2,10 +2,12 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('http://localhost:8080/getTypes')
     .then(response => response.json())
     .then(data => loadTransactionTypes(data['data']));
-    fetch('http://localhost:8080/getTransactions')
+    const filter = document.getElementById("date_filter");
+    filter.value = 'day';
+    fetch('http://localhost:8080/getTransactions?filter='+ filter.value)
     .then(response => response.json())
     .then(data => loadTransactionTable(data['data']));
-    fetch('http://localhost:8080/getTotals')
+    fetch('http://localhost:8080/getTotals?filter='+ filter.value)
     .then(response => response.json())
     .then(data => loadTotalAmounts(data['data']));
 
@@ -13,10 +15,10 @@ document.addEventListener('DOMContentLoaded', function () {
     transaction_number.value = 'TRN-000' + Math.floor(Math.random() * 1000000);
 
     const type = document.getElementById("transaction_type");
-    const filter = document.getElementById("date_filter");
+
     const submitButton = document.getElementById("submitTransaction");
     
-    filter.value = 'day';
+
 
     type.addEventListener('change', function() {
         const type_id = type.value;
@@ -26,8 +28,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     filter.addEventListener('change', function() {
-        const filter_value = filter.value;
-        console.log(filter_value);
+        fetch('http://localhost:8080/getTransactions?filter='+ filter.value)
+        .then(response => response.json())
+        .then(data => loadTransactionTable(data['data']));
+        fetch('http://localhost:8080/getTotals?filter='+ filter.value)
+        .then(response => response.json())
+        .then(data => loadTotalAmounts(data['data']));
     });
 
     submitButton.addEventListener('click', function() {

@@ -55,10 +55,30 @@ class DBServices {
         }
     }
 
-    async getAllTransactions() {
+    async getAllTransactions({filter}) {
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT t.transaction_number, t.type_id, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id;";
+                let query = "";
+                switch(filter)
+                {
+                    case 'day':
+                        query = "SELECT t.transaction_number, t.type_id, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE DATE(t.date) = CURDATE();";
+                        break;
+                    case 'week':
+                        query = "SELECT t.transaction_number, t.type_id, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE YEARWEEK(t.date) = YEARWEEK(CURDATE());";
+                        break;
+                    case 'month':
+                        query = "SELECT t.transaction_number, t.type_id, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE MONTH(t.date) = MONTH(CURDATE()) AND YEAR(t.date) = YEAR(CURDATE());";
+                        break;
+                    case 'year':
+                        query = "SELECT t.transaction_number, t.type_id, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE YEAR(t.date) = YEAR(CURDATE());";
+                        break;
+                    default:
+                        query = "SELECT t.transaction_number, t.type_id, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id;"; 
+                        break;
+                }
+               
+               
                 db.query(query, (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
@@ -88,10 +108,28 @@ class DBServices {
         }
     }
 
-    async getAllTotal() {
+    async getAllTotal({filter}) {
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) AS INCOME, SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END) AS EXPENSE, (SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) - SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END)) AS TOTAL FROM transactions;";
+                let query = "";
+                switch(filter)
+                {
+                    case 'day':
+                        query = "SELECT SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) AS INCOME, SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END) AS EXPENSE, (SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) - SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END)) AS TOTAL FROM transactions WHERE DATE(date) = CURDATE();";
+                        break;
+                    case 'week':
+                        query = "SELECT SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) AS INCOME, SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END) AS EXPENSE, (SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) - SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END)) AS TOTAL FROM transactions WHERE YEARWEEK(date) = YEARWEEK(CURDATE());";
+                        break;
+                    case 'month':
+                        query = "SELECT SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) AS INCOME, SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END) AS EXPENSE, (SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) - SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END)) AS TOTAL FROM transactions WHERE MONTH(date) = MONTH(CURDATE()) AND YEAR(date) = YEAR(CURDATE());";
+                        break;
+                    case 'year':
+                        query = "SELECT SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) AS INCOME, SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END) AS EXPENSE, (SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) - SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END)) AS TOTAL FROM transactions WHERE YEAR(date) = YEAR(CURDATE());";
+                        break;
+                    default:
+                        query = "SELECT SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) AS INCOME, SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END) AS EXPENSE, (SUM(CASE WHEN type_id = 1 THEN amount ELSE 0 END) - SUM(CASE WHEN type_id = 2 THEN amount ELSE 0 END)) AS TOTAL FROM transactions;"; 
+                        break;
+                }
                 db.query(query, (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
