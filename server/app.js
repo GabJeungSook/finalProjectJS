@@ -82,6 +82,17 @@ app.get('/getExpenses', (request, response) => {
     .catch(err => console.log(err));
 });
 
+//deleteTransaction
+app.delete('/deleteTransaction/:transaction_number', (request, response) => {
+    const { transaction_number } = request.params;
+    const db = DBServices.getDBServiceInstance();
+    const result = db.deleteTransaction(transaction_number);
+    result
+    .then(data => response.json({data: data}))
+    .catch(err => console.log(err));
+})
+
+
 
 
 app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));

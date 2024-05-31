@@ -210,6 +210,23 @@ class DBServices {
         }
     }
 
+    async deleteTransaction(transaction_number)
+    {
+        try{
+            const response = await new Promise((resolve, reject) => {
+            let query = "DELETE FROM transactions WHERE transaction_number = ?";
+            db.query(query, transaction_number, (err, results) => {
+                if (err) reject(new Error(err.message));
+                resolve(results);
+            });
+        });
+        return response;
+        } catch (error)
+        {
+            console.log(error);
+        }
+    }
+
 }
 
 module.exports = DBServices;

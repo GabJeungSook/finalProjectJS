@@ -85,6 +85,38 @@ function loadExpenseTable(data)
         <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500">₱ ${formattedAmount}</td>
     `;
    
+    const editButton = document.createElement('button');
+    editButton.textContent = 'Edit';
+    editButton.classList.add('rounded-md', 'my-2', 'mx-2', 'bg-green-800', 'px-3', 'py-2', 'text-sm', 'font-semibold', 'text-white','shadow-sm'); // Add your desired button styles
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.classList.add('rounded-md', 'my-2', 'mx-2', 'bg-red-800', 'px-3', 'py-2', 'text-sm', 'font-semibold', 'text-white','shadow-sm'); // Add your desired button styles
+          
+    row.appendChild(editButton);
+    row.appendChild(deleteButton);
+
+    editButton.addEventListener('click', function() {
+      alert(transaction.transaction_number);
+    });
+
+    deleteButton.addEventListener('click', function() {
+      confirm('Are you sure you want to delete this transaction?')
+      {
+        fetch('http://localhost:8080/deleteTransaction/' + transaction.transaction_number, {
+          method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert('Transaction successfully deleted!');
+          const filter = document.getElementById("date_filter");
+          filter.value = 'day';
+          fetch('http://localhost:8080/getIncomes?filter='+ filter.value)
+          .then(response => response.json())
+          .then(data => loadExpenseTable(data['data']));
+        })
+      }
+    });
+
     tbody.appendChild(row);
     }
     const formattedTotal = total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -97,6 +129,7 @@ function loadExpenseTable(data)
     <td class="whitespace-nowrap px-2 py-2 text-lg text-gray-900 font-semibold">Total</td>
     <td class="whitespace-nowrap px-2 py-2 text-lg text-gray-900 font-semibold">₱ ${formattedTotal}</td>
     `;  
+    
     tbody.appendChild(totalRow);
     table.appendChild(tbody);
 }
