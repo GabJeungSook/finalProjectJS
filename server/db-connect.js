@@ -244,6 +244,40 @@ class DBServices {
         }
     }
 
+    async getAllTransactions({filter}) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                let query = "";
+                switch(filter)
+                {
+                    case 'day':
+                        query = "SELECT t.transaction_number, t.type_id, t.category_id, c.name, t.description, t.amount, t.date, ty.name AS type_name FROM transactions t INNER JOIN categories c ON t.category_id = c.id INNER JOIN types ty ON t.type_id = ty.id WHERE DATE(t.date) = CURDATE();";
+                        break;
+                    case 'week':
+                        query = "SELECT t.transaction_number, t.type_id, t.category_id, c.name, t.description, t.amount, t.date, ty.name AS type_name FROM transactions t INNER JOIN categories c ON t.category_id = c.id INNER JOIN types ty ON t.type_id = ty.id WHERE YEARWEEK(t.date) = YEARWEEK(CURDATE());";
+                        break;
+                    case 'month':
+                        query = "SELECT t.transaction_number, t.type_id, t.category_id, c.name, t.description, t.amount, t.date, ty.name AS type_name FROM transactions t INNER JOIN categories c ON t.category_id = c.id INNER JOIN types ty ON t.type_id = ty.id WHERE MONTH(t.date) = MONTH(CURDATE()) AND YEAR(t.date) = YEAR(CURDATE());";
+                        break;
+                    case 'year':
+                        query = "SELECT t.transaction_number, t.type_id, t.category_id, c.name, t.description, t.amount, t.date, ty.name AS type_name FROM transactions t INNER JOIN categories c ON t.category_id = c.id INNER JOIN types ty ON t.type_id = ty.id WHERE YEAR(t.date) = YEAR(CURDATE());";
+                        break;
+                    default:
+                        query = "SELECT t.transaction_number, t.type_id, t.category_id, c.name, t.description, t.amount, t.date, ty.name AS type_name FROM transactions t INNER JOIN categories c ON t.category_id = c.id INNER JOIN types ty ON t.type_id = ty.id;"; 
+                        break;
+                }
+                db.query(query, (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                });
+            });
+            return response;
+        } catch (error)
+        {
+            console.log(error);
+        }
+    }
+
 }
 
 module.exports = DBServices;

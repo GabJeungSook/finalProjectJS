@@ -92,6 +92,7 @@ app.delete('/deleteTransaction/:transaction_number', (request, response) => {
     .catch(err => console.log(err));
 })
 
+//update transactions
 app.patch('/updateTransaction', (request, response) => {
     const db = DBServices.getDBServiceInstance();
     const result = db.updateTransaction(request.body);
@@ -99,6 +100,17 @@ app.patch('/updateTransaction', (request, response) => {
     .then(data => response.json({data: data}))
     .catch(err => console.log(err));
 })
+
+//get all transactions
+app.get('/getTransactions', (request, response) => {
+    const db = DBServices.getDBServiceInstance();
+
+    const result = db.getAllExpenseTransactions(request.query);
+    result
+    .then(data => response.json({data: data}))
+    .catch(err => console.log(err));
+});
+
 
 
 
