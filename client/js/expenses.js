@@ -1,19 +1,77 @@
 document.addEventListener('DOMContentLoaded', function () {
-
+    fetch('http://localhost:8080/getTypes')
+    .then(response => response.json())
+    .then(data => loadTransactionTypes(data['data']));
+    const type = document.getElementById("transaction_type");
     const filter = document.getElementById("date_filter");
     filter.value = 'day';
     fetch('http://localhost:8080/getExpenses?filter='+ filter.value)
     .then(response => response.json())
     .then(data => loadExpenseTable(data['data']));
+    fetch('http://localhost:8080/getCategories?id=' + 1)
+    .then(response => response.json())
+    .then(data => loadCategories(data['data']));
 
-
+    type.addEventListener('change', function() {
+      const type_id = type.value;
+      fetch('http://localhost:8080/getCategories?id=' + type_id)
+      .then(response => response.json())
+      .then(data => loadCategories(data['data']));
+  });
+  
     filter.addEventListener('change', function() {
         fetch('http://localhost:8080/getExpenses?filter='+ filter.value)
         .then(response => response.json())
         .then(data => loadExpenseTable(data['data']));
     });
 
+    const editModal = document.getElementById('editModal');
+    const xModal = document.getElementById('closeModalX');
+    const closeModal = document.getElementById('closeModal'); 
+
+    closeModal.addEventListener('click', function () {
+      editModal.setAttribute('hidden', true);
+  });
+
+  xModal.addEventListener('click', function () {
+    editModal.setAttribute('hidden', true);
+  });
+
+
 });
+
+function loadTransactionTypes(data)
+{
+    const customerNames = document.getElementById('transaction_type');
+    if(data.length === 0)
+    {
+        document.getElementById('transaction_type').innerHTML = '<option value="" disabled>No transaction type found</option>';
+        return;
+    }
+  for (const name of data) {
+    const option = document.createElement('option');
+    option.value = name.id; 
+    option.textContent = name.name; 
+    customerNames.appendChild(option);
+  }
+}
+
+function loadCategories(data)
+{
+    const customerNames = document.getElementById('categories');
+    customerNames.innerHTML = '';
+    if(data.length === 0)
+    {
+        document.getElementById('categories').innerHTML = '<option value="" disabled>No category found</option>';
+        return;
+    }
+  for (const name of data) {
+    const option = document.createElement('option');
+    option.value = name.id; 
+    option.textContent = name.name; 
+    customerNames.appendChild(option);
+  }
+}
 
 function loadExpenseTable(data)
 {
@@ -96,7 +154,20 @@ function loadExpenseTable(data)
     row.appendChild(deleteButton);
 
     editButton.addEventListener('click', function() {
-      alert(transaction.transaction_number);
+      const editModal = document.getElementById('editModal');
+      const _transaction_number = document.getElementById('transaction_number');
+      const _type = document.getElementById('transaction_type');
+      const _category = document.getElementById('categories');
+      const _description = document.getElementById('description');
+      const _amount = document.getElementById('amount');
+      _transaction_number.value = transaction.transaction_number; 
+      _type.value = transaction.type_id;
+      _category.value = transaction.category_id;
+      _description.value = transaction.description;
+      _amount.value = transaction.amount;
+
+      editModal.removeAttribute('hidden');
+
     });
 
     deleteButton.addEventListener('click', function() {

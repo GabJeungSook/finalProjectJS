@@ -183,19 +183,19 @@ class DBServices {
                 switch(filter)
                 {
                     case 'day':
-                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2 AND DATE(t.date) = CURDATE();";
+                        query = "SELECT t.transaction_number, t.type_id, t.category_id, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2 AND DATE(t.date) = CURDATE();";
                         break;
                     case 'week':
-                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2 AND YEARWEEK(t.date) = YEARWEEK(CURDATE());";
+                        query = "SELECT t.transaction_number, t.type_id, t.category_id, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2 AND YEARWEEK(t.date) = YEARWEEK(CURDATE());";
                         break;
                     case 'month':
-                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2 AND MONTH(t.date) = MONTH(CURDATE()) AND YEAR(t.date) = YEAR(CURDATE());";
+                        query = "SELECT t.transaction_number, t.type_id, t.category_id, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2 AND MONTH(t.date) = MONTH(CURDATE()) AND YEAR(t.date) = YEAR(CURDATE());";
                         break;
                     case 'year':
-                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2 AND YEAR(t.date) = YEAR(CURDATE());";
+                        query = "SELECT t.transaction_number, t.type_id, t.category_id, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2 AND YEAR(t.date) = YEAR(CURDATE());";
                         break;
                     default:
-                        query = "SELECT t.transaction_number, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2;"; 
+                        query = "SELECT t.transaction_number, t.type_id, t.category_id, c.name, t.description, t.amount, t.date FROM transactions t INNER JOIN categories c ON t.category_id = c.id WHERE t.type_id = 2;"; 
                         break;
                 }
                 db.query(query, (err, results) => {
