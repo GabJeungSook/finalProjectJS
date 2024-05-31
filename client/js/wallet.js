@@ -57,10 +57,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .then((response) => response.json())
             .then((data1) => {
                 alert('Transaction saved successfully');
-                fetch('http://localhost:8080/getTransactions')
+                fetch('http://localhost:8080/getTransactions?filter='+ filter.value)
                 .then(response => response.json())
                 .then(data => loadTransactionTable(data['data']));
-                fetch('http://localhost:8080/getTotals')
+                fetch('http://localhost:8080/getTotals?filter='+ filter.value)
                 .then(response => response.json())
                 .then(data => loadTotalAmounts(data['data']));
 

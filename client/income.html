@@ -327,8 +327,72 @@
                   </div>
                 </div>
               </div>
-              
         </div>
+
+         <!-- modal -->
+         <div hidden id="editModal" class="fixed transform transition duration-200 ease-in-out z-50 inset-0 overflow-y-auto" :class="{ 'opacity-100': isOpen, 'opacity-0 pointer-events-none': !isOpen }">
+          <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 sm:p-0">
+          <div x-show="isOpen" class="fixed transform transition duration-150 ease-in-out bg-white rounded-lg shadow-lg w-full max-w-md m-auto">
+              <div class="flex items-center justify-between p-4 border-b border-gray-200 rounded-t">
+              <h5 class="text-xl font-medium text-gray-800">Edit Transaction</h5>
+              <button id="closeModalX" type="button" class="text-gray-400 focus:outline-none hover:text-gray-500">
+                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                    
+              </button>
+              </div>
+              <div class="p-6">
+              <!-- form -->
+                  <div class="pb-12">
+                  
+                      <div class="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                      <div class="sm:col-span-6">
+                          <label for="transaction_number" class="block text-sm font-medium leading-6 text-gray-900">Transaction No.</label>
+                          <div class="mt-2">
+                          <input type="text" name="transaction_number" id="transaction_number" disabled class="px-3 block w-full rounded-md border-0 py-1.5 text-gray-600 font-medium shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                          </div>
+                      </div>
+                      <div class="sm:col-span-6">
+                          <label for="transaction_type" class="block text-sm font-medium leading-6 text-gray-900">Transaction Type</label>
+                          <div class="mt-2">
+                          <select id="transaction_type" name="transaction_type" class="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-green-600 sm:max-w-md sm:text-sm sm:leading-6">
+                              <option>-- SELECT --</option>
+                          </select>
+                          </div>
+                      </div>
+                      <div class="sm:col-span-6">
+                          <label for="categories" class="block text-sm font-medium leading-6 text-gray-900">Category</label>
+                          <div class="mt-2">
+                          <select id="categories" name="categories" class="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-green-600 sm:max-w-md sm:text-sm sm:leading-6">
+                              <option>-- SELECT --</option>
+                          </select>
+                          </div>
+                      </div>
+                      <div class="sm:col-span-6">
+                          <label for="description" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
+                          <div class="mt-2">
+                          <input type="text" name="description" id="description" class="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-green-600 sm:text-sm sm:leading-6">
+                          </div>
+                      </div>
+                      <div class="sm:col-span-6">
+                          <label for="amount" class="block text-sm font-medium leading-6 text-gray-900">Amount</label>
+                          <div class="mt-2">
+                          <input type="number" name="amount" id="amount" class="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-green-600 sm:text-sm sm:leading-6">
+                          </div>
+                      </div>
+                      </div>
+                  </div>
+                  <!-- form end -->
+              </div>
+              <div class="flex space-x-3 items-center justify-end p-4 border-t border-gray-200 rounded-b">
+                  <button id="closeModal" type="button" class="px-4 py-2 rounded-md bg-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Close</button>
+              <button id="saveTransaction"  type="button" class="px-4 py-2 rounded-md bg-green-600 text-sm font-medium text-gray-50 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Submit</button>
+              </div>
+          </div>
+          </div>
+      </div>
+      <!-- modal end -->
 
         <!-- Your content -->
       </div>
