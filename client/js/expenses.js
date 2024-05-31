@@ -190,6 +190,33 @@ function loadExpenseTable(data)
 
     tbody.appendChild(row);
     }
+
+    const saveTransaction = document.getElementById('saveTransaction');
+    saveTransaction.addEventListener('click', function () {
+    const category = document.getElementById('categories').value;
+    const description = document.getElementById('description').value;
+    const amount_input = document.getElementById('amount').value;
+    const transaction_number = document.getElementById('transaction_number').value;
+      fetch('http://localhost:8080/updateTransaction/', {
+                  method: 'PATCH',
+                  headers: {
+                  'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({category, description, amount_input, transaction_number}),
+              })
+              .then((response) => response.json())
+              .then((data1) => {
+                  alert('Transaction Updated Successfully!');
+                  fetch('http://localhost:8080/getExpenses?filter='+ 'day')
+                  .then(response => response.json())
+                  .then(data => loadExpenseTable(data['data']));
+                  const editModal = document.getElementById('editModal');
+                  editModal.setAttribute('hidden', true);
+
+  
+              });
+    })
+
     const formattedTotal = total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const totalRow = document.createElement('tr');
     totalRow.classList.add('border-t', 'border-gray-300');

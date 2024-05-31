@@ -227,6 +227,23 @@ class DBServices {
         }
     }
 
+    async updateTransaction({category, description, amount_input, transaction_number})
+    {
+        try{
+            const response = await new Promise((resolve, reject) => {
+            let query = "UPDATE transactions SET category_id = ?, description = ?, amount = ? WHERE transaction_number = ?";
+            db.query(query, [category, description, amount_input, transaction_number], (err, results) => {
+                if (err) reject(new Error(err.message));
+                resolve(results);
+            });
+        });
+        return response;
+        } catch (error)
+        {
+            console.log(error);
+        }
+    }
+
 }
 
 module.exports = DBServices;

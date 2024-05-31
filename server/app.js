@@ -92,6 +92,14 @@ app.delete('/deleteTransaction/:transaction_number', (request, response) => {
     .catch(err => console.log(err));
 })
 
+app.patch('/updateTransaction', (request, response) => {
+    const db = DBServices.getDBServiceInstance();
+    const result = db.updateTransaction(request.body);
+    result
+    .then(data => response.json({data: data}))
+    .catch(err => console.log(err));
+})
+
 
 
 
