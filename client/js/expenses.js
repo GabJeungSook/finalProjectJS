@@ -8,16 +8,16 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('http://localhost:8080/getExpenses?filter='+ filter.value)
     .then(response => response.json())
     .then(data => loadExpenseTable(data['data']));
-    fetch('http://localhost:8080/getCategories?id=' + 1)
+    fetch('http://localhost:8080/getCategories?id=' + 2)
     .then(response => response.json())
     .then(data => loadCategories(data['data']));
 
-    type.addEventListener('change', function() {
-      const type_id = type.value;
-      fetch('http://localhost:8080/getCategories?id=' + type_id)
-      .then(response => response.json())
-      .then(data => loadCategories(data['data']));
-  });
+  //   type.addEventListener('change', function() {
+  //     const type_id = type.value;
+  //     fetch('http://localhost:8080/getCategories?id=' + type_id)
+  //     .then(response => response.json())
+  //     .then(data => loadCategories(data['data']));
+  // });
   
     filter.addEventListener('change', function() {
         fetch('http://localhost:8080/getExpenses?filter='+ filter.value)

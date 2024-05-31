@@ -14,12 +14,12 @@ document.addEventListener('DOMContentLoaded', function () {
       .then(response => response.json())
       .then(data => loadCategories(data['data']));
 
-    type.addEventListener('change', function() {
-      const type_id = type.value;
-      fetch('http://localhost:8080/getCategories?id=' + type_id)
-      .then(response => response.json())
-      .then(data => loadCategories(data['data']));
-  });
+  //   type.addEventListener('change', function() {
+  //     const type_id = type.value;
+  //     fetch('http://localhost:8080/getCategories?id=' + type_id)
+  //     .then(response => response.json())
+  //     .then(data => loadCategories(data['data']));
+  // });
 
 
     filter.addEventListener('change', function() {
