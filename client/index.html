@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
    <!--
@@ -287,7 +288,7 @@
         <div class="px-4 sm:px-6 lg:px-8">
           <span class="text-4xl font-medium">Dashboard</span>  
           <div>
-            <h3 class="text-base font-semibold leading-6 text-gray-900 mt-4">Last 30 days</h3>
+            <!-- <h3 class="text-base font-semibold leading-6 text-gray-900 mt-4">Last 30 days</h3>
             <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
                 <dt>
@@ -364,13 +365,18 @@
                   </div>
                 </dd>
               </div>
-            </dl>
+            </dl> -->
+
+            <!-- chart -->
+            <div class="p-8">
+              <canvas id="myChart"></canvas>
+            </div>
           </div>
           
         </div>
       </div>
     </main>
   </div>
-  
+  <script src="js/index.js"></script>
 </body>
 </html>

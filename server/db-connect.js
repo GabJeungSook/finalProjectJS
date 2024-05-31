@@ -278,6 +278,22 @@ class DBServices {
         }
     }
 
+    async getChartData() {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT MONTHNAME(date) AS month, SUM(amount) AS total_amount FROM transactions GROUP BY MONTH(date) ORDER BY MONTH(date);";
+                db.query(query, (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                });
+            });
+            return response;
+        } catch (error)
+        {
+            console.log(error);
+        }
+    }
+
 }
 
 module.exports = DBServices;

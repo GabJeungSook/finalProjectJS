@@ -111,6 +111,16 @@ app.get('/getTransactions', (request, response) => {
     .catch(err => console.log(err));
 });
 
+//get chart data
+app.get('/getChart', (request, response) => {
+    const db = DBServices.getDBServiceInstance();
+
+    const result = db.getChartData();
+    result
+    .then(data => response.json({data: data}))
+    .catch(err => console.log(err));
+})
+
 
 
 
