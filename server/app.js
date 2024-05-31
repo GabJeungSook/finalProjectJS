@@ -115,7 +115,7 @@ app.get('/getTransactions', (request, response) => {
 app.get('/getChart', (request, response) => {
     const db = DBServices.getDBServiceInstance();
 
-    const result = db.getChartData();
+    const result = db.getChartData(request.query);
     result
     .then(data => response.json({data: data}))
     .catch(err => console.log(err));

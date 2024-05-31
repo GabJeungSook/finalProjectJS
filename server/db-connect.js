@@ -278,10 +278,21 @@ class DBServices {
         }
     }
 
-    async getChartData() {
+    async getChartData({filter}) {
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT MONTHNAME(date) AS month, SUM(amount) AS total_amount FROM transactions GROUP BY MONTH(date) ORDER BY MONTH(date);";
+                let query = "";
+                switch(filter)
+                {
+                    case 'income':
+                         query = "SELECT MONTHNAME(date) AS month, SUM(amount) AS total_amount FROM transactions WHERE type_id = 1 GROUP BY MONTH(date) ORDER BY MONTH(date);";
+                        break;
+                    case 'expense':
+                         query = "SELECT MONTHNAME(date) AS month, SUM(amount) AS total_amount FROM transactions WHERE type_id = 2 GROUP BY MONTH(date) ORDER BY MONTH(date);";
+                        break;
+                    default:
+                        query = "SELECT MONTHNAME(date) AS month, SUM(amount) AS total_amount FROM transactions GROUP BY MONTH(date) ORDER BY MONTH(date);";
+                    }
                 db.query(query, (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
